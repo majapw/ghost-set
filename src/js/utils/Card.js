@@ -5,6 +5,10 @@ class Card {
     this.pattern = pattern;
     this.shape = shape;
   }
+
+  getKey() {
+    return `${this.color}${this.number}${this.pattern}${this.shape}`;
+  }
 }
 
 export default Card;

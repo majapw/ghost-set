@@ -12,7 +12,7 @@ const defaultProps = {
   minNumOfCards: 12,
 };
 
-class Table extends Component {
+class Cards extends Component {
   constructor(props) {
     super(props);
 
@@ -22,8 +22,22 @@ class Table extends Component {
     };
 
     this.state = {
+      selectedCards: [],
       visibleCards: cards,
     };
+  }
+
+  selectCard(card) {
+    const { selectedCards } = this.state;
+
+    const cardIndex = selectedCards.indexOf(card);
+    if (cardIndex !== -1) {
+      selectedCards.splice(cardIndex, 1);
+    } else {
+      selectedCards.push(card);
+    }
+
+    this.forceUpdate();
   }
 
   render() {
@@ -32,24 +46,6 @@ class Table extends Component {
         {this.renderCards()}
       </div>
     );
-  }
-
-  renderRowOfCards(row, index) {
-    const cardsInRow = [];
-    row.forEach((card) => {
-      let cardKey = `${card.color},${card.number},${card.pattern},${card.shape}`;
-      cardsInRow.push(<Card
-                  key={cardKey}
-                  color={card.color}
-                  number={card.number}
-                  pattern={card.pattern}
-                  shape={card.shape} />);
-    });
-    return (
-      <div key={index}>
-        {cardsInRow}
-      </div>
-    )
   }
 
   renderCards() {
@@ -66,9 +62,26 @@ class Table extends Component {
 
     return rows;
   }
+
+  renderRowOfCards(row, index) {
+    const cardsInRow = [];
+    row.forEach((card) => {
+      cardsInRow.push(<Card
+                  key={card.getKey()}
+                  card={card}
+                  isSelected={this.state.selectedCards.indexOf(card) !== -1}
+                  selectCard={() => this.selectCard(card)}
+                  />);
+    });
+    return (
+      <div key={index}>
+        {cardsInRow}
+      </div>
+    )
+  }
 };
 
-Table.propTypes = propTypes;
-Table.defaultProps = defaultProps;
+Cards.propTypes = propTypes;
+Cards.defaultProps = defaultProps;
 
-export default Table;
+export default Cards;
