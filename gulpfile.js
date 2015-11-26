@@ -1,4 +1,5 @@
 var gulp = require('gulp');
+var sass = require('gulp-sass');
 var htmlreplace = require('gulp-html-replace');
 var source = require('vinyl-source-stream');
 var babelify = require('babelify');
@@ -31,9 +32,18 @@ gulp.task('images', function() {
     .pipe(gulp.dest(path.IMAGES.DEST));
 });
 
+gulp.task('sass', function () {
+  return gulp
+    .src('./src/css/**/*.scss')
+    .pipe(sass())
+    .on('error', function(err) {console.log(err);})
+    .pipe(gulp.dest('./dist/css'));
+});
+
 gulp.task('watch', function() {
   gulp.watch(path.HTML, ['copy']);
   gulp.watch(path.IMAGES.SRC, ['images']);
+  gulp.watch('./src/css/**/*.scss', ['sass']);
 
   var watcher = watchify(
     browserify({
