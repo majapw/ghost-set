@@ -5,25 +5,28 @@ import Card from './Card';
 const propTypes = {
   numCardsInRow: PropTypes.number,
   minNumOfCards: PropTypes.number,
+  numCardsInASet: PropTypes.number,
+  verifySet: PropTypes.func,
 };
 
 const defaultProps = {
   numCardsInRow: 3,
   minNumOfCards: 12,
+  numCardsInASet: 3,
+  verifySet: function() {},
 };
 
 class Cards extends Component {
   constructor(props) {
     super(props);
 
-    const cards = [];
+    // This should happen when the deck is created.
     for (let i = 0; i < this.props.minNumOfCards; i++) {
-      cards.push(this.props.deck.drawCard());
+      this.props.deck.drawCard();
     };
 
     this.state = {
       selectedCards: [],
-      visibleCards: cards,
     };
   }
 
@@ -38,6 +41,10 @@ class Cards extends Component {
     }
 
     this.forceUpdate();
+
+    if (selectedCards.length === this.props.numCardsInASet) {
+      this.props.verifySet(selectedCards);
+    }
   }
 
   render() {
@@ -49,8 +56,8 @@ class Cards extends Component {
   }
 
   renderCards() {
-    const { numCardsInRow } = this.props;
-    const { visibleCards } = this.state;
+    const { numCardsInRow, deck } = this.props;
+    const { visibleCards } = deck;
 
     const numOfRows = Math.ceil(visibleCards.length / numCardsInRow);
     const rows = [];

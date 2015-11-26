@@ -3,7 +3,8 @@ import Card from './Card';
 class Deck {
   constructor() {
     this.cards = [];
-    this.removedCards = [];
+    this.visibleCards = [];
+    this.foundSets = [];
 
     this.initCards();
   }
@@ -27,7 +28,7 @@ class Deck {
   drawCard() {
     const index = Math.floor(Math.random() * this.cards.length);
     const card = this.cards.splice(index, 1)[0];
-    this.removedCards.push(card);
+    this.visibleCards.push(card);
 
     return card;
   }
@@ -36,6 +37,13 @@ class Deck {
     return this.cards;
   }
 
+  findSet(set) {
+    this.foundSets.push(set);
+    set.forEach((card) => {
+      this.visibleCards.splice(this.visibleCards.indexOf(card), 1);
+      if (this.cards.length) this.drawCard();
+    });
+  }
 }
 
 export default Deck;
