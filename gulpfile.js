@@ -1,9 +1,8 @@
 var gulp = require('gulp');
 var htmlreplace = require('gulp-html-replace');
 var source = require('vinyl-source-stream');
-//var babelify = require('babelify')
+var babelify = require('babelify');
 var browserify = require('browserify');
-var reactify = require('reactify');
 var watchify = require('watchify');
 var streamify = require('gulp-streamify');
 
@@ -15,7 +14,7 @@ var path = {
   DEST: 'dist',
   DEST_BUILD: 'dist/build',
   DEST_SRC: 'dist/src',
-  ENTRY_POINT: './src/js/main.js'
+  ENTRY_POINT: './src/js/main.jsx'
 };
 
 gulp.task('copy', function(){
@@ -26,21 +25,28 @@ gulp.task('copy', function(){
 gulp.task('watch', function() {
   gulp.watch(path.HTML, ['copy']);
 
-  var watcher  = watchify(browserify({
-    entries: [path.ENTRY_POINT],
-    transform: [reactify],
-    debug: true,
-    cache: {}, packageCache: {}, fullPaths: true
-  }));
+  var watcher = watchify(
+    browserify({
+      entries: path.ENTRY_POINT,
+      extensions: ['.jsx'],
+      debug: true
+    })
+    .transform(babelify, {
+      presets: ["react", "es2015"]
+    }));
 
   return watcher.on('update', function () {
     watcher.bundle()
-      .pipe(source(path.OUT))
-      .pipe(gulp.dest(path.DEST_SRC))
-      console.log('Updated');
+           .on('error', function(err){
+              process.stdout.write('' + err + '\n');
+            })
+           .pipe(source(path.OUT))
+           .pipe(gulp.dest(path.DEST_SRC));
+    console.log('Updated');
   })
     .bundle()
     .pipe(source(path.OUT))
     .pipe(gulp.dest(path.DEST_SRC));
 });
+
 gulp.task('default', ['watch']);
