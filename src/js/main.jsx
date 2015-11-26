@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import Table from './components/Table';
+
 ReactDOM.render(
-  <h1>Hello, world!</h1>,
+  <Table />,
   document.getElementById('wrapper')
 );

@@ -14,7 +14,11 @@ var path = {
   DEST: 'dist',
   DEST_BUILD: 'dist/build',
   DEST_SRC: 'dist/src',
-  ENTRY_POINT: './src/js/main.jsx'
+  ENTRY_POINT: './src/js/main.jsx',
+  IMAGES: {
+    SRC: 'src/images/**/*',
+    DEST: 'dist/images'
+  },
 };
 
 gulp.task('copy', function(){
@@ -22,8 +26,14 @@ gulp.task('copy', function(){
     .pipe(gulp.dest(path.DEST));
 });
 
+gulp.task('images', function() {
+  return gulp.src(path.IMAGES.SRC)
+    .pipe(gulp.dest(path.IMAGES.DEST));
+});
+
 gulp.task('watch', function() {
   gulp.watch(path.HTML, ['copy']);
+  gulp.watch(path.IMAGES.SRC, ['images']);
 
   var watcher = watchify(
     browserify({
