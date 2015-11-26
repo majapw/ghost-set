@@ -13,7 +13,7 @@ class Table extends Component {
 
   render() {
     return (
-      <div>
+      <div className="table">
         <Cards deck={this.state.deck} mode="regular" />
       </div>
     );

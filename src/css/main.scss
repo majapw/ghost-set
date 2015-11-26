@@ -1,1 +1,11 @@
-@import '_card.scss';
+@import 'variables.scss';
+@import 'card.scss';
+
+body {
+  background-color: $color-light-gray;
+}
+
+.table {
+  margin: 0 auto;
+  width: 666px;
+}

@@ -27,13 +27,13 @@ class Card extends Component {
 
     const imageAssets = [];
     for (let i = 0; i < this.props.number; i++) {
-      imageAssets.push(<img key={i} src={imageFileName} height={75}/>)
+      imageAssets.push(<img className="card__element" key={i} src={imageFileName} height={75}/>)
     }
 
     return (
-      <span>
+      <div className="card">
         {imageAssets}
-      </span>
+      </div>
     );
   }
 };

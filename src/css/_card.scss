@@ -1,0 +1,18 @@
+@import 'variables.scss';
+
+.card {
+  background-color: $color-white;
+  border: 1px solid $color-medium-gray;
+  border-radius: 5px;
+  display: inline-block;
+
+  text-align: center;
+
+  margin: 10px;
+  padding: 5px 0;
+  width: 200px;
+
+  .card__element {
+    padding: 5px;
+  }
+}
