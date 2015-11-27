@@ -1,0 +1,50 @@
+@import 'variables.scss';
+
+input[type="button"] {
+  color: white;
+  cursor: pointer;
+  display: block;
+  margin-bottom: 5px;
+  padding: 12px 5px 8px 5px;
+  border: none;
+  border-radius: 2px;
+  font-size: 16px;
+  font-family: Nexa;
+  outline: none;
+
+  &.btn-red {
+    background-color: $color-red;
+    border: 1px solid $color-dark-red;
+  }
+
+  &.btn-red:hover, &.btn-red:active {
+    background-color: $color-light-red;
+  }
+
+  &.btn-green {
+    background-color: $color-green;
+    border: 1px solid $color-dark-green;
+  }
+
+  &.btn-green:hover,
+  &.btn-green:active {
+    background-color: $color-light-green;
+  }
+
+  &.btn-purple {
+    background-color: $color-purple;
+    border: 1px solid $color-dark-purple;
+  }
+
+  &.btn-purple:hover,
+  &.btn-purple:active,
+  &.disabled {
+    background-color: $color-light-purple;
+  }
+
+  &.disabled {
+    border: none;
+    color: $color-darker-gray;
+    cursor: default;
+  }
+}

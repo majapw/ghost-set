@@ -32,23 +32,28 @@ class Deck {
   }
 
   drawCard() {
-    const index = Math.floor(Math.random() * this.cards.length);
-    const card = this.cards.splice(index, 1)[0];
-    this.visibleCards.push(card);
+    if (this.cards.length > 0) {
+      const index = Math.floor(Math.random() * this.cards.length);
+      const card = this.cards.splice(index, 1)[0];
+      this.visibleCards.push(card);
 
-    return card;
+      return card;
+    }
   }
 
   getCards() {
     return this.cards;
   }
 
-  findSet(set) {
+  findSet(set, tableSize) {
     this.foundSets.push(set);
     set.forEach((card) => {
       this.visibleCards.splice(this.visibleCards.indexOf(card), 1);
-      if (this.cards.length) this.drawCard();
     });
+
+    while (this.visibleCards.length < tableSize && this.cards.length > 0) {
+      if (this.cards.length) this.drawCard();
+    }
   }
 }
 

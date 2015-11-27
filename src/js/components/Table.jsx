@@ -3,6 +3,9 @@ import React, { Component, PropTypes } from 'react';
 import Cards from './Cards';
 import Deck from '../utils/Deck';
 
+const NUM_CARDS_IN_ROW = 3;
+const MIN_CARDS_ON_TABLE = 12;
+
 const GAME_MODES = {
   ORIGINAL: 0,
   GHOST: 1,
@@ -21,7 +24,7 @@ class Table extends Component {
     super(props);
 
     const deck = new Deck();
-    deck.initTable(12);
+    deck.initTable(MIN_CARDS_ON_TABLE);
 
     this.state = {
       deck: deck,
@@ -44,7 +47,7 @@ class Table extends Component {
       }, true);
 
       if (isSet) {
-        deck.findSet(set);
+        deck.findSet(set, MIN_CARDS_ON_TABLE);
         this.setState({
           numOfFoundSets: numOfFoundSets + 1,
           message: 'set',
@@ -59,6 +62,25 @@ class Table extends Component {
     }
   }
 
+  startNewGame() {
+    const newDeck = new Deck();
+    newDeck.initTable(MIN_CARDS_ON_TABLE);
+
+    this.setState({
+      deck: newDeck,
+      numOfFoundSets: 0,
+      message: 'default',
+    });
+  }
+
+  dealMoreCards() {
+    for (let i = 0; i < NUM_CARDS_IN_ROW; i++) {
+      this.state.deck.drawCard();
+    }
+
+    this.forceUpdate();
+  }
+
   render() {
     const message = MESSAGING[this.state.message || 'default'];
     return (
@@ -67,6 +89,7 @@ class Table extends Component {
           <div className="messaging error">{message}</div>
           <Cards
             deck={this.state.deck}
+            numCardsInRow={NUM_CARDS_IN_ROW}
             verifySet={(set) => this.verifySet(set)}
           />
         </div>
@@ -78,9 +101,18 @@ class Table extends Component {
   renderTableControls() {
     return (
       <div className="table--controls">
-        <input type="button" value="New Game" className="btn btn-red" />
-        <input type="button" value="Deal More Cards" className="btn btn-green" />
-        <input type="button" value="Switch Mode" className="btn btn-purple" />
+        <input
+          type="button"
+          value="New Game"
+          className="btn btn-red"
+          onClick={(e) => this.startNewGame(e)} />
+        <input
+          type="button"
+          value="Deal More Cards"
+          className="btn btn-green"
+          onClick={(e) => this.dealMoreCards(e)}
+        />
+        <input type="button" value="Switch Mode" className="btn btn-purple disabled" />
 
         <div className="stats">
           <div className="sets-found">

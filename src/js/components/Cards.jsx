@@ -4,14 +4,12 @@ import Card from './Card';
 
 const propTypes = {
   numCardsInRow: PropTypes.number,
-  minNumOfCards: PropTypes.number,
   numCardsInASet: PropTypes.number,
   verifySet: PropTypes.func,
 };
 
 const defaultProps = {
   numCardsInRow: 3,
-  minNumOfCards: 12,
   numCardsInASet: 3,
   verifySet: function() {},
 };
