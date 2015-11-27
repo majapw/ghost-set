@@ -1,0 +1,47 @@
+.table {
+  margin: 0 auto;
+  width: 850px;
+}
+
+.table--playing-area,
+.table--controls {
+  display: inline-block;
+}
+
+.table--playing-area {
+  width: 80%;
+  .messaging {
+    font-weight: bold;
+    height: 1em;
+    margin-top: 20px;
+    margin-bottom: 5px;
+    text-align: center;
+
+    &.error {
+      color: $color-red;
+    }
+  }
+}
+
+.table--controls {
+  width: 20%;
+  margin-top: 51px;
+  vertical-align: top;
+
+  .btn {
+    width: 100%;
+  }
+
+  .stats {
+    margin: 50px 0;
+
+    .sets-found,
+    .cards-remaining {
+      margin: 10px 0;
+    }
+
+    .stat--name {
+      font-weight: bold;
+    }
+  }
+}

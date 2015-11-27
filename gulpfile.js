@@ -27,6 +27,11 @@ gulp.task('copy', function(){
     .pipe(gulp.dest(path.DEST));
 });
 
+gulp.task('fonts', function(){
+  gulp.src('src/fonts/**/*')
+    .pipe(gulp.dest('dist/fonts'));
+});
+
 gulp.task('images', function() {
   return gulp.src(path.IMAGES.SRC)
     .pipe(gulp.dest(path.IMAGES.DEST));
@@ -43,6 +48,7 @@ gulp.task('sass', function () {
 gulp.task('watch', function() {
   gulp.watch(path.HTML, ['copy']);
   gulp.watch(path.IMAGES.SRC, ['images']);
+  gulp.watch('src/fonts/**/*', ['fonts']);
   gulp.watch('./src/css/**/*.scss', ['sass']);
 
   var watcher = watchify(

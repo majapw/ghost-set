@@ -25,6 +25,12 @@ class Deck {
     });
   }
 
+  initTable(tableSize) {
+    for (let i = 0; i < tableSize; i++) {
+      this.drawCard();
+    };
+  }
+
   drawCard() {
     const index = Math.floor(Math.random() * this.cards.length);
     const card = this.cards.splice(index, 1)[0];

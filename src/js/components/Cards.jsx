@@ -20,11 +20,6 @@ class Cards extends Component {
   constructor(props) {
     super(props);
 
-    // This should happen when the deck is created.
-    for (let i = 0; i < this.props.minNumOfCards; i++) {
-      this.props.deck.drawCard();
-    };
-
     this.state = {
       selectedCards: [],
     };
@@ -40,10 +35,15 @@ class Cards extends Component {
       selectedCards.push(card);
     }
 
-    this.forceUpdate();
-
     if (selectedCards.length === this.props.numCardsInASet) {
       this.props.verifySet(selectedCards);
+      setTimeout(() => {
+        this.setState({
+          selectedCards: [],
+        });
+      }, 200);
+    } else {
+      this.forceUpdate();
     }
   }
 
