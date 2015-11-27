@@ -69,7 +69,7 @@ class Deck {
 
   dealMoreCards(numOfCards) {
     for (let i = 0; i < numOfCards; i++) {
-      this.state.deck.drawCard();
+      this.drawCard();
     }
 
     this.findAllPossibleSets();
