@@ -17,13 +17,14 @@ class Table extends Component {
   constructor(props) {
     super(props);
 
-    const deck = new Deck(MIN_CARDS_ON_TABLE);
+    const gameMode = GameModes.original;
+    const deck = new Deck(gameMode, MIN_CARDS_ON_TABLE);
     deck.initTable();
 
     this.state = {
       deck: deck,
       numOfFoundSets: 0,
-      gameMode: GameModes.original,
+      gameMode: gameMode,
     };
   }
 
@@ -44,7 +45,7 @@ class Table extends Component {
   }
 
   startNewGame() {
-    const newDeck = new Deck(MIN_CARDS_ON_TABLE);
+    const newDeck = new Deck(this.state.gameMode, MIN_CARDS_ON_TABLE);
     newDeck.initTable();
 
     this.setState({
@@ -55,10 +56,7 @@ class Table extends Component {
   }
 
   dealMoreCards() {
-    for (let i = 0; i < NUM_CARDS_IN_ROW; i++) {
-      this.state.deck.drawCard();
-    }
-
+    this.state.deck.dealMoreCards(NUM_CARDS_IN_ROW);
     this.forceUpdate();
   }
 
@@ -96,13 +94,25 @@ class Table extends Component {
         />
         <input type="button" value="Switch Mode" className="btn btn-purple disabled" />
 
-        <div className="stats">
-          <div className="sets-found">
-            <span className="stat--name">Sets Found:</span> {this.state.numOfFoundSets}
-          </div>
-          <div className="cards-remaining">
-            <span className="stat--name">Cards Remaining:</span> {this.state.deck.cards.length}
-          </div>
+        {this.renderStats()}
+      </div>
+    );
+  }
+
+  renderStats() {
+    const { deck } = this.state;
+    return (
+      <div className="stats">
+        <div className="sets-found">
+          <span className="stat--name">Sets Found:</span> {this.state.numOfFoundSets}
+        </div>
+
+        <div className="cards-remaining">
+          <span className="stat--name">Cards Remaining:</span> {deck.cards.length}
+        </div>
+
+        <div className="sets-remaining">
+          <span className="stat--name">Sets Remaining:</span> {deck.possibleSets.length}
         </div>
       </div>
     );

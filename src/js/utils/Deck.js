@@ -1,10 +1,13 @@
 import Card from './Card';
 
 class Deck {
-  constructor(tableSize) {
+  constructor(gameMode, tableSize) {
+    this.gameMode = gameMode;
     this.tableSize = tableSize;
+
     this.cards = [];
     this.visibleCards = [];
+    this.possibleSets = [];
     this.foundSets = [];
 
     this.initCards();
@@ -30,6 +33,28 @@ class Deck {
     for (let i = 0; i < this.tableSize; i++) {
       this.drawCard();
     };
+
+    this.findAllPossibleSets();
+  }
+
+  findAllPossibleSets() {
+    this.possibleSets = [];
+
+    let i = 0, j = 1, k = 2;
+    while (i < this.visibleCards.length) {
+      while (j < this.visibleCards.length) {
+        while (k < this.visibleCards.length) {
+          let possibleSet = [this.visibleCards[i], this.visibleCards[j], this.visibleCards[k]];
+          if (this.gameMode.verify(possibleSet)) this.possibleSets.push(possibleSet);
+          k++;
+        }
+        j++;
+        k = j + 1;
+      }
+      i++;
+      j = i + 1;
+      k = j + 1;
+    }
   }
 
   drawCard() {
@@ -42,8 +67,12 @@ class Deck {
     }
   }
 
-  getCards() {
-    return this.cards;
+  dealMoreCards(numOfCards) {
+    for (let i = 0; i < numOfCards; i++) {
+      this.state.deck.drawCard();
+    }
+
+    this.findAllPossibleSets();
   }
 
   findSet(set) {
@@ -55,6 +84,8 @@ class Deck {
     while (this.visibleCards.length < this.tableSize && this.cards.length > 0) {
       if (this.cards.length) this.drawCard();
     }
+
+    this.findAllPossibleSets();
   }
 }
 
