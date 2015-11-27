@@ -1,7 +1,8 @@
 import Card from './Card';
 
 class Deck {
-  constructor() {
+  constructor(tableSize) {
+    this.tableSize = tableSize;
     this.cards = [];
     this.visibleCards = [];
     this.foundSets = [];
@@ -25,8 +26,8 @@ class Deck {
     });
   }
 
-  initTable(tableSize) {
-    for (let i = 0; i < tableSize; i++) {
+  initTable() {
+    for (let i = 0; i < this.tableSize; i++) {
       this.drawCard();
     };
   }
@@ -45,13 +46,13 @@ class Deck {
     return this.cards;
   }
 
-  findSet(set, tableSize) {
+  findSet(set) {
     this.foundSets.push(set);
     set.forEach((card) => {
       this.visibleCards.splice(this.visibleCards.indexOf(card), 1);
     });
 
-    while (this.visibleCards.length < tableSize && this.cards.length > 0) {
+    while (this.visibleCards.length < this.tableSize && this.cards.length > 0) {
       if (this.cards.length) this.drawCard();
     }
   }

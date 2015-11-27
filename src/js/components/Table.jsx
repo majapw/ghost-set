@@ -2,16 +2,10 @@ import React, { Component, PropTypes } from 'react';
 
 import Cards from './Cards';
 import Deck from '../utils/Deck';
+import GameModes from '../utils/GameModes';
 
 const NUM_CARDS_IN_ROW = 3;
 const MIN_CARDS_ON_TABLE = 12;
-
-const GAME_MODES = {
-  ORIGINAL: 0,
-  GHOST: 1,
-}
-
-const ATTRIBUTES = ['color', 'number', 'pattern', 'shape'];
 
 const MESSAGING = {
   set: "You just found a set!",
@@ -23,48 +17,35 @@ class Table extends Component {
   constructor(props) {
     super(props);
 
-    const deck = new Deck();
-    deck.initTable(MIN_CARDS_ON_TABLE);
+    const deck = new Deck(MIN_CARDS_ON_TABLE);
+    deck.initTable();
 
     this.state = {
       deck: deck,
       numOfFoundSets: 0,
-      gameMode: GAME_MODES.ORIGINAL,
+      gameMode: GameModes.original,
     };
   }
 
   verifySet(set) {
     const { deck, numOfFoundSets, gameMode } = this.state;
 
-    if (gameMode === GAME_MODES.ORIGINAL) {
-      let attrValueArray, numDistinctValues;
-      const isSet = ATTRIBUTES.reduce((prevValue, attr) => {
-        attrValueArray = set.map((card) => {
-          return card[attr];
-        });
-        numDistinctValues = (new Set(attrValueArray)).size;
-        return prevValue && (numDistinctValues === 1 || numDistinctValues === attrValueArray.length);
-      }, true);
-
-      if (isSet) {
-        deck.findSet(set, MIN_CARDS_ON_TABLE);
-        this.setState({
-          numOfFoundSets: numOfFoundSets + 1,
-          message: 'set',
-        });
-      } else {
-        this.setState({
-          message: 'badSet',
-        });
-      }
+    if (gameMode.verify(set)) {
+      deck.findSet(set);
+      this.setState({
+        numOfFoundSets: numOfFoundSets + 1,
+        message: 'set',
+      });
     } else {
-      console.log('ghost set is not implemented yet')
+      this.setState({
+        message: 'badSet',
+      });
     }
   }
 
   startNewGame() {
-    const newDeck = new Deck();
-    newDeck.initTable(MIN_CARDS_ON_TABLE);
+    const newDeck = new Deck(MIN_CARDS_ON_TABLE);
+    newDeck.initTable();
 
     this.setState({
       deck: newDeck,
@@ -90,6 +71,7 @@ class Table extends Component {
           <Cards
             deck={this.state.deck}
             numCardsInRow={NUM_CARDS_IN_ROW}
+            numCardsInASet={this.state.gameMode.setSize}
             verifySet={(set) => this.verifySet(set)}
           />
         </div>
